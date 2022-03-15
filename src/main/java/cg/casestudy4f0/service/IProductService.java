@@ -15,7 +15,7 @@ public interface IProductService {
 
     Optional<Product> findById(Long id);
 
-    Page<Product> findByName(String name);
+    Page<Product> findAllByName(Pageable pageable, String name);
 
     Page<Product> findByPriceBetween(Double min, Double max);
 

@@ -3,7 +3,8 @@ package cg.casestudy4f0.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -12,7 +13,11 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotEmpty
+    @Size(min = 2, max = 30)
     private String name;
+    
     private int price;
     private int quantity;
     private double weight;

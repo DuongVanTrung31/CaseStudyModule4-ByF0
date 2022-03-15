@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface IProductRepository extends PagingAndSortingRepository<Product, Long> {
-    Page<Product> findAllByNameContaining(String name);
+    Page<Product> findAllByNameContaining(Pageable pageable, String name);
 
     Page<Product> findAllByPriceBetween(Double min, Double max);
 
