@@ -1,5 +1,6 @@
 package cg.casestudy4f0.service.imp;
 
+import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
 import cg.casestudy4f0.repository.IProductRepository;
 import cg.casestudy4f0.service.IProductService;
@@ -36,6 +37,11 @@ public class ProductService implements IProductService {
     @Override
     public Page<Product> findAllByName(Pageable pageable, String name) {
         return iProductRepository.findAllByNameContaining(pageable, name);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory(Pageable pageable, Category category) {
+        return iProductRepository.findAllByCategory(pageable, category);
     }
 
     @Override

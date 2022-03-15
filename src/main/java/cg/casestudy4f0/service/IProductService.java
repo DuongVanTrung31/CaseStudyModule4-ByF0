@@ -1,5 +1,6 @@
 package cg.casestudy4f0.service;
 
+import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ public interface IProductService {
     Optional<Product> findById(Long id);
 
     Page<Product> findAllByName(Pageable pageable, String name);
+
+    Page<Product> findAllByCategory(Pageable pageable, Category category);
 
     Page<Product> findByPriceBetween(Double min, Double max);
 
