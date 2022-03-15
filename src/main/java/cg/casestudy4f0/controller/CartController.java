@@ -20,6 +20,7 @@ public class CartController {
     @Autowired
     private OrderService orderService;
 
+//    thêm sản phẩm vào giỏ
     @PostMapping("/cart")
     public ResponseEntity<?> addToCart(@RequestBody CartModel cartModel, HttpSession session){
         Map<Long, CartModel> cart = (Map<Long, CartModel>) session.getAttribute("cart");
@@ -35,6 +36,8 @@ public class CartController {
         session.setAttribute("cart", cart);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
+
+//    Update sản phẩm trong giỏ
     @PutMapping("/cart")
     public ResponseEntity<Map<Long, CartModel>> updateCartItems(@RequestBody CartModel cartModel, HttpSession session){
         Map<Long, CartModel> cart = (Map<Long, CartModel>) session.getAttribute("cart");
@@ -51,6 +54,7 @@ public class CartController {
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
+//    Xóa sản phẩm trong giỏ
     @DeleteMapping("/cart/{id}")
     public ResponseEntity<CartModel> deleteCartItem(@PathVariable(value = "id") Long id, HttpSession session) {
         Map<Long, CartModel> cart = (Map<Long, CartModel>) session.getAttribute("cart");
@@ -62,6 +66,8 @@ public class CartController {
         }
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
+
+//    Thanh toán
     @PostMapping("/pay")
     public HttpStatus pay(@RequestBody Order order, HttpSession session){
         if (orderService.addReceipt((Map<Long, CartModel>) session.getAttribute("cart"), order)){

@@ -36,24 +36,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean addReceipt(Map<Long, CartModel> cart, Order order) {
         try {
-            Order order1 = new Order();
-            order1.setUser(order.getUser());
-            order1.setCreatedAt(order.getCreatedAt());
-            order1.setAddress(order.getAddress());
-            order1.setFullName(order.getFullName());
-            order1.setPhone(order.getPhone());
-            order1.setEmail(order.getEmail());
-            orderRepository.save(order1);
-            for (CartModel cartModel : cart.values()){
-                Product product = productRepository.findProductById(cartModel.getProduct_id());
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setOrder(order1);
-                orderDetail.setNumber(cartModel.getQuantity());
-                orderDetail.setProduct(productRepository.findProductById(cartModel.getProduct_id()));
-                product.setQuantity(product.getQuantity() - orderDetail.getNumber());
-                orderDetailRepository.save(orderDetail);
+            if (cart != null) {
+                Order order1 = new Order();
+                order1.setUser(order.getUser());
+                order1.setCreatedAt(order.getCreatedAt());
+                order1.setAddress(order.getAddress());
+                order1.setFullName(order.getFullName());
+                order1.setPhone(order.getPhone());
+                order1.setNote(order.getNote());
+                order1.setEmail(order.getEmail());
+                orderRepository.save(order1);
+                for (CartModel cartModel : cart.values()){
+                    Product product = productRepository.findProductById(cartModel.getProduct_id());
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(order1);
+                    orderDetail.setNumber(cartModel.getQuantity());
+                    orderDetail.setProduct(productRepository.findProductById(cartModel.getProduct_id()));
+                    product.setQuantity(product.getQuantity() - orderDetail.getNumber());
+                    orderDetailRepository.save(orderDetail);
+                }
+                return true;
             }
-            return true;
+            else return false;
         }
         catch (HibernateException e) {
             e.printStackTrace();
