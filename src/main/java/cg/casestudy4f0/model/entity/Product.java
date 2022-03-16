@@ -1,10 +1,14 @@
 package cg.casestudy4f0.model.entity;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 
 
 @Entity
@@ -16,13 +20,26 @@ public class Product {
 
     @NotEmpty
     @Size(min = 2, max = 30)
+    @Pattern(regexp = "([a-z][A-Z])")
     private String name;
-    
+
+    @Min(value = 1000)
+    @Pattern(regexp = "^\\d+$")
     private int price;
+
+
     private int quantity;
+
+    @Min(value = 1)
     private double weight;
+
+    @Size(min = 1, max = 100)
     private String description;
     private String image;
+    private String ensignUrl;
+
+    @Transient
+    private MultipartFile file;
 
     @ManyToOne
     private Category category;
@@ -92,5 +109,21 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getEnsignUrl() {
+        return ensignUrl;
+    }
+
+    public void setEnsignUrl(String ensignUrl) {
+        this.ensignUrl = ensignUrl;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
