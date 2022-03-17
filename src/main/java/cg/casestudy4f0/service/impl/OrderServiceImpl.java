@@ -47,11 +47,11 @@ public class OrderServiceImpl implements OrderService {
                 order1.setEmail(order.getEmail());
                 orderRepository.save(order1);
                 for (CartModel cartModel : cart.values()){
-                    Product product = productRepository.findProductById(cartModel.getProduct_id());
+                    Product product = productRepository.findById(cartModel.getProduct_id()).get();
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order1);
                     orderDetail.setNumber(cartModel.getQuantity());
-                    orderDetail.setProduct(productRepository.findProductById(cartModel.getProduct_id()));
+                    orderDetail.setProduct(product);
                     product.setQuantity(product.getQuantity() - orderDetail.getNumber());
                     orderDetailRepository.save(orderDetail);
                 }

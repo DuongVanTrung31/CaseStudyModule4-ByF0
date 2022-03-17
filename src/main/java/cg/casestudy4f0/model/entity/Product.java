@@ -3,7 +3,7 @@ package cg.casestudy4f0.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 
 @Entity
