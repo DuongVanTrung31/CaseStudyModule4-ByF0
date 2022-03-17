@@ -1,4 +1,4 @@
-package cg.casestudy4f0.service.imp;
+package cg.casestudy4f0.service.impl;
 
 import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public class ProductService implements IProductService {
+public class ProductServiceImpl implements IProductService {
     @Autowired
     private IProductRepository iProductRepository;
 

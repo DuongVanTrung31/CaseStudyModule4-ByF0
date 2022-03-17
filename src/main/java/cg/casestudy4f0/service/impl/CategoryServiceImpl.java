@@ -1,4 +1,4 @@
-package cg.casestudy4f0.service.imp;
+package cg.casestudy4f0.service.impl;
 
 import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.repository.ICategoryRepository;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class CategoryService implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     private ICategoryRepository iCategoryRepository;
 
