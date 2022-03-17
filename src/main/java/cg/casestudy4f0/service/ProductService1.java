@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface IProductService {
+public interface ProductService1 {
     Page<Product> findAll(Pageable pageable);
 
     void save(Product product);

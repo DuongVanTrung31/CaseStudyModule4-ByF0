@@ -4,7 +4,7 @@ import cg.casestudy4f0.model.entity.Category;
 
 import java.util.Optional;
 
-public interface ICategoryService {
+public interface CategoryService1 {
     Iterable<Category> findAll();
 
     Optional<Category> findById(Long id);

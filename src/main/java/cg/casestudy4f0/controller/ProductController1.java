@@ -2,8 +2,8 @@ package cg.casestudy4f0.controller;
 
 import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
-import cg.casestudy4f0.service.ICategoryService;
-import cg.casestudy4f0.service.IProductService;
+import cg.casestudy4f0.service.CategoryService1;
+import cg.casestudy4f0.service.ProductService1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,16 +24,16 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
-public class ProductController {
+public class ProductController1 {
     @Autowired
-    private IProductService iProductService;
+    private ProductService1 productService1;
 
     @Autowired
-    private ICategoryService iCategoryService;
+    private CategoryService1 categoryService1;
 
     @ModelAttribute(name = "Category")
     private Iterable<Category> showCategory() {
-        return iCategoryService.findAll();
+        return categoryService1.findAll();
     }
 
     @Value("${file-upload}")
@@ -44,10 +44,10 @@ public class ProductController {
         ModelAndView modelAndView = new ModelAndView("product/list");
         Page<Product> products;
         if (search.isPresent()) {
-            products = iProductService.findAllByName(pageable, search.get());
+            products = productService1.findAllByName(pageable, search.get());
             modelAndView.addObject("search", search.get());
         } else {
-            products = iProductService.findAll(pageable);
+            products = productService1.findAll(pageable);
         }
         modelAndView.addObject("products", products);
         return modelAndView;
@@ -56,7 +56,7 @@ public class ProductController {
     @GetMapping("/view/{id}")
     public ModelAndView showDetail(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("product/detail");
-        Optional<Product> product = iProductService.findById(id);
+        Optional<Product> product = productService1.findById(id);
         product.ifPresent(value -> modelAndView.addObject("product", product));
         return modelAndView;
     }
@@ -64,8 +64,8 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public ModelAndView deleteProduct(@PageableDefault (value =  5) Pageable pageable, @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("product/list");
-        iProductService.delete(id);
-        Page<Product> products = iProductService.findAll(pageable);
+        productService1.delete(id);
+        Page<Product> products = productService1.findAll(pageable);
         modelAndView.addObject("products", products);
         return modelAndView;
     }
@@ -93,14 +93,14 @@ public class ProductController {
         }
         product.setEnsignUrl("image/" + filename);
 
-        iProductService.save(product);
+        productService1.save(product);
         return "redirect:/product";
     }
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("product/edit");
-        Optional<Product> product = iProductService.findById(id);
+        Optional<Product> product = productService1.findById(id);
         product.ifPresent(value -> modelAndView.addObject("product", value));
         return modelAndView;
     }
@@ -117,14 +117,14 @@ public class ProductController {
         String filename = multipartFile.getOriginalFilename();
         FileCopyUtils.copy(product.getEnsignUrl().getBytes(), new File(fileUpload + filename));
         product.setId(id);
-        iProductService.save(product);
+        productService1.save(product);
         return "redirect:/product";
     }
 
     @PostMapping("/search-price")
     public ModelAndView searchPrice(@RequestParam("min") Double min, @RequestParam("max") Double max) {
         ModelAndView modelAndView = new ModelAndView("product/list");
-        Page<Product> products = iProductService.findByPriceBetween(min, max);
+        Page<Product> products = productService1.findByPriceBetween(min, max);
         modelAndView.addObject("products", products);
         return modelAndView;
     }

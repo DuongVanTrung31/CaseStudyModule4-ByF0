@@ -2,8 +2,8 @@ package cg.casestudy4f0.controller;
 
 import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
-import cg.casestudy4f0.service.ICategoryService;
-import cg.casestudy4f0.service.IProductService;
+import cg.casestudy4f0.service.CategoryService1;
+import cg.casestudy4f0.service.ProductService1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,12 +24,12 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(value =  "/category")
-public class CategoryController {
+public class CategoryController1 {
     @Autowired
-    private IProductService iProductService;
+    private ProductService1 productService1;
 
     @Autowired
-    private ICategoryService iCategoryService;
+    private CategoryService1 categoryService1;
 
     @Value("${file-upload}")
     private String fileUpload;
@@ -37,7 +37,7 @@ public class CategoryController {
     @GetMapping
     public ModelAndView showCategory() {
         ModelAndView modelAndView = new ModelAndView("category/list");
-        Iterable<Category> categories = iCategoryService.findAll();
+        Iterable<Category> categories = categoryService1.findAll();
         modelAndView.addObject("categories", categories);
         return modelAndView;
     }
@@ -46,12 +46,12 @@ public class CategoryController {
     public ModelAndView showProductByCategory(@PageableDefault(value = 5)Pageable pageable, @PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("category/list-product");
         Page<Product> products;
-        Optional<Category> category = iCategoryService.findById(id);
+        Optional<Category> category = categoryService1.findById(id);
         if(category.isPresent()) {
-            products = iProductService.findAllByCategory(pageable, category.get());
+            products = productService1.findAllByCategory(pageable, category.get());
             modelAndView.addObject("category", category.get());
         } else {
-            products = iProductService.findAll(pageable);
+            products = productService1.findAll(pageable);
         }
         modelAndView.addObject("products", products);
         return modelAndView;
@@ -60,8 +60,8 @@ public class CategoryController {
     @GetMapping("/delete/{id}")
     public ModelAndView delete(@PageableDefault(value = 5) Pageable pageable, @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("category/list");
-        iCategoryService.delete(id);
-        Iterable<Category> categories = iCategoryService.findAll();
+        categoryService1.delete(id);
+        Iterable<Category> categories = categoryService1.findAll();
         modelAndView.addObject("categories", categories);
         return modelAndView;
     }
@@ -90,14 +90,14 @@ public class CategoryController {
         }
 
         category.setEnsignUrl("image/" + filename);
-        iCategoryService.save(category);
+        categoryService1.save(category);
         return "redirect:/category";
     }
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("category/edit");
-        Optional<Category> category = iCategoryService.findById(id);
+        Optional<Category> category = categoryService1.findById(id);
         category.ifPresent(value -> modelAndView.addObject("category", category));
         return modelAndView;
     }
@@ -113,7 +113,7 @@ public class CategoryController {
         String filename = multipartFile.getOriginalFilename();
         FileCopyUtils.copy(category.getEnsignUrl().getBytes(), new File(fileUpload + filename));
         category.setId(id);
-        iCategoryService.save(category);
+        categoryService1.save(category);
         return "redirect:/category";
     }
 }

@@ -1,15 +1,15 @@
 package cg.casestudy4f0.service.impl;
 
 import cg.casestudy4f0.model.entity.Category;
-import cg.casestudy4f0.repository.ICategoryRepository;
-import cg.casestudy4f0.service.ICategoryService;
+import cg.casestudy4f0.repository.CategoryRepository1;
+import cg.casestudy4f0.service.CategoryService1;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryServiceImpl1 implements CategoryService1 {
     @Autowired
-    private ICategoryRepository iCategoryRepository;
+    private CategoryRepository1 iCategoryRepository;
 
     @Override
     public Iterable<Category> findAll() {
