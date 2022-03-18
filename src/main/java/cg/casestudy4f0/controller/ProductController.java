@@ -33,6 +33,11 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<?> getProduct(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
+    }
+
     @GetMapping("/page")
     public ResponseEntity<Page<Product>> showAllPage(@PageableDefault(value = 5) Pageable pageable) {
         Page<Product> products = productService.getAll(pageable);
