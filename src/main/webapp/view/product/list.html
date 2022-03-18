@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style th:replace="/layout :: css"></style>
+</head>
+<body>
+<h1><a style="text-decoration: none" type="button" th:href="@{/product}"><span style="color: white">List Product</span></a></h1>
+<button><a th:href="@{/product/create}">Create new student</a></button><br><br>
+<button><a type="button" th:href="@{/category}">List Category</a></button><br><br>
+
+<form th:action="@{/product}" method="get">
+    <label>Search By Name:
+        <input type="text" name="search" th:value="${search}">
+    </label>
+    <label>Search By Price:<br><br>
+        <label> Min:
+            <input type="text" name="min" th:value="${min}">
+        </label>
+        <label> Max:
+            <input type="text" name="max" th:value="${max}">
+        </label>
+    </label><br><br>
+    <button type="submit">Search</button>
+</form><br>
+
+<table id="products">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Weight</th>
+        <th>Description</th>
+        <th>Image</th>
+    </tr>
+    <tr th:each="p : ${product}">
+        <td th:text="${p.getName()}"></td>
+        <td th:text="${p.getPrice()}"></td>
+        <td th:text="${p.getQuantity()}"></td>
+        <td th:text="${p.getWeight()}"></td>
+        <td th:text="${p.getDescription()}"></td>
+        <td><img src="@{${file} + ${product.getImage().getOriginalFilename()}}" alt="Error"></td>
+        <td>
+            <a th:text="${p.getCategory().getName()}"
+               th:href="@{/category/product-in(class_id=${p.getCategory().getId()})}"></a>
+        </td>
+        <td><a th:href="@{/product/edit/{id}(id=${p.getId()})}">Edit</a></td>
+        <td><a th:href="@{/product/delete/{id}(id=${p.getId()})}"
+               onclick="return confirm('Are you sure you want to Delete?')">Delete</a></td>
+        <td><a th:href="@{/product/view/{id}(id=${p.getId()})}">View</a></td>
+    </tr>
+</table>
+<br>
+<div>
+    <a th:href="@{/student(page=${product.number - 1},search=${search},min=${min},max=${max})}"
+       th:if="${products.hasPrevious()}"><span>Previous</span></a>
+    <span th:text="${products.number + 1} + '/' + ${products.totalPages}"></span>
+    <a th:href="@{/product(page=${products.number + 1},search=${search},min=${min},max=${max})}"
+       th:if="${products.hasNext()}"><span>Next</span></a>
+</div>
+<footer th:replace="/layout::footer"></footer>
+</body>
+</html>

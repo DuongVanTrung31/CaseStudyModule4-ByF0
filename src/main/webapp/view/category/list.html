@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style th:replace="/layout::css"></style>
+</head>
+<body>
+<h1>List Category</h1>
+<a type="button" th:href="@{/category/create}">Create new category</a>
+<table id="tables">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th colspan="2">Action</th>
+    </tr>
+    <tr th:each="c : ${category}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td><a type="button" th:href="@{/category/edit/{id}(id=${c.id})}">Edit</a></td>
+    </tr>
+</table>
+<a th:href="@{/product}">Back to home</a>
+</body>
+</html

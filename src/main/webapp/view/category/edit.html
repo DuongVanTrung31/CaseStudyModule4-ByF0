@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/category/edit/{id}(id=${category.id})}" method="post" th:object="${category}">
+    <label>Name:
+        <input type="text" th:field="*{name}">
+    </label>
+    <button type="submit">Update</button>
+</form>
+<a th:href="@{/category}">Back to category</a>
+</body>
+</html>

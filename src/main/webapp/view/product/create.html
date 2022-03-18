@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style th:replace="/layout :: css"></style>
+</head>
+<body>
+<h1>Create New Productd</h1>
+<form id="form" th:action="@{/product/create}" method="post" th:object="${product}">
+    <label>Name:
+        <input type="text" th:field="*{name}" required>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    </label>
+    <label>Price:
+        <input type="text" th:field="*{price}" required>
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+    </label>
+    <label>Quantity:
+        <input type="text" th:field="*{quantity}" required>
+        <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+    </label>
+    <label>Weight:
+        <input type="text" th:field="*{weight}" required>
+        <p th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></p>
+    </label>
+    <label>Description:
+        <input type="text" th:field="*{description}" required>
+        <p th:if="${#fields.hasErrors('description')}" th:errors="*{descrip tion}"></p>
+    </label>
+    <label>Image:
+        <input type="file" name="file" th:field="*{file}" required>
+    </label>
+    <label>Category:
+        <select th:field="*{category}">
+            <option th:each="c : ${category}" th:value="${c.getId()}" th:text="${c.getName()}"></option>
+        </select>
+    </label>
+    <button type="submit">Create</button>
+</form>
+<a th:href="@{/product}">Back to home</a>
+<footer th:replace="/layout::footer"></footer>
+</body>
+</html>

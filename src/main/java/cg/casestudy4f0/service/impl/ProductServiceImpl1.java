@@ -48,9 +48,4 @@ public class ProductServiceImpl1 implements ProductService1 {
     public Page<Product> findByPriceBetween(Double min, Double max) {
         return iProductRepository.findAllByPriceBetween(min, max);
     }
-
-    @Override
-    public Page<Product> findByNameAndPriceBetween(String name, Double min, Double max) {
-        return iProductRepository.findAllByNameContainingAndPriceBetween(name, min, max);
-    }
 }
