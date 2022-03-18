@@ -128,19 +128,4 @@ public class ProductController1 {
         modelAndView.addObject("products", products);
         return modelAndView;
     }
-
-//    @PostMapping("/search")
-//    public ModelAndView search(@RequestParam("search") Optional<String> name,
-//                               @RequestParam("min") Optional<Double> min,
-//                               @RequestParam("max") Optional<Double> max) {
-//        ModelAndView modelAndView = new ModelAndView("product/list");
-//        Page<Product> products;
-//        if(name.isPresent()) {
-//            products = iProductService.findByNameAndPriceBetween(namX`e.get(), min.orElse(0D), max.orElse(0D));
-//        } else {
-//            products = iProductService.findAll();
-//        }
-//        modelAndView.addObject("products", products);
-//        return modelAndView;
-//    }
 }

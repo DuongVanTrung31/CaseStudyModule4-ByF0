@@ -1,1 +1,4 @@
 rootProject.name = 'CaseStudy4-F0'
+include 'src:test:untitled'
+findProject(':src:test:untitled')?.name = 'untitled'
+

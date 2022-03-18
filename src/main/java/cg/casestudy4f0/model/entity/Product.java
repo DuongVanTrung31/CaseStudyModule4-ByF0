@@ -27,10 +27,11 @@ public class Product {
     @Pattern(regexp = "^\\d+$")
     private int price;
 
-
+    @Pattern(regexp = "^\\d+$")
     private int quantity;
 
     @Min(value = 1)
+    @Pattern(regexp = "^\\d{1,45}$")
     private double weight;
 
     @Size(min = 1, max = 100)

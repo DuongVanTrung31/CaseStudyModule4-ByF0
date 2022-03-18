@@ -21,7 +21,4 @@ public interface ProductService1 {
     Page<Product> findAllByCategory(Pageable pageable, Category category);
 
     Page<Product> findByPriceBetween(Double min, Double max);
-
-    Page<Product> findByNameAndPriceBetween(String name, Double min, Double max);
-
 }
