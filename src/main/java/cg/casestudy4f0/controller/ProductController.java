@@ -1,9 +1,11 @@
 package cg.casestudy4f0.controller;
 
 
+import cg.casestudy4f0.model.entity.Category;
 import cg.casestudy4f0.model.entity.Product;
 import cg.casestudy4f0.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +23,9 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/products")
 public class ProductController {
+    @Value("${upload.path}")
+    private String upload;
+
     @Autowired
     private ProductService productService;
 
@@ -42,18 +47,21 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<Product> createProduct(@RequestPart("json") Product product,
-                                                 @RequestPart("file") MultipartFile file) {
-//        String fileName = file.getOriginalFilename();
-//        try {
-//            FileCopyUtils.copy(file.getBytes(), new File(upload + fileName));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        product.setImage(render + fileName);
-        Product productCreate = productService.save(product);
-        return new ResponseEntity<>(productCreate, HttpStatus.CREATED);
+    @PostMapping("/upload1")
+    public ResponseEntity<?> upload1(@RequestPart("file")MultipartFile file,
+                                          @RequestPart("product") Product product) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File(upload + fileName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        product.setImage(file.getOriginalFilename());
+        Category category = new Category();
+        category.setId(product.getCategory().getId());
+        product.setCategory(category);
+        productService.save(product);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

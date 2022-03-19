@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="admin.css">
+    <script src="../static/js/upload.js"></script>
+    <script src="../static/js/admin.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Product List</h1>
+
+    <button class="btn btn-primary" onclick="displayFormCreate()">Create new product</button>
+    <button class="btn btn-primary" onclick="getProductByPage(0)">Display By Page</button>
+
+    <!--    search form-->
+    <form id="searchForm">
+        <div class="row">
+            <div class="col">
+                <label><input type="text" id="search" class="form-control" placeholder="Enter a word"></label>
+            </div>
+            <div class="col">
+                <button class="btn btn-info" onclick="searchProduct()">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!--    table data-->
+    <div>
+        <table id="productList" class="table table-striped"></table>
+        <div id="displayPage"></div>
+    </div>
+
+    <!--    <form enctype="multipart/form-data">-->
+    <!--        <div class="mb-3 mt-3">-->
+    <!--            <label for="name" class="form-label">Name:</label>-->
+    <!--            <label>-->
+    <!--                <input type="text" class="form-control" name="name" placeholder="Enter name">-->
+    <!--            </label>-->
+    <!--        </div>-->
+    <!--        <div class="mb-3">-->
+    <!--            <label for="file1" class="form-label">File:</label>-->
+    <!--            <input type="file" class="form-control" id="file1" name="file">-->
+    <!--        </div>-->
+    <!--        <button type="submit" class="btn btn-primary" onclick="uploadFile()">Submit-->
+    <!--        </button>-->
+    <!--    </form>-->
+
+    <!--    form upload file full option-->
+    <form id="form1">
+        <div class="mb-3 mt-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price:</label>
+            <input type="text" class="form-control" id="price" placeholder="Enter price">
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input type="text" class="form-control" id="quantity" placeholder="Enter quantity">
+        </div>
+        <div class="mb-3">
+            <label for="weight" class="form-label">Weight:</label>
+            <input type="text" class="form-control" id="weight" placeholder="Enter weight">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" class="form-control" id="description" placeholder="Enter description">
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">File:</label>
+            <input type="file" class="form-control" id="file" name="file">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Category:</label>
+            <div id="div-category"></div>
+        </div>
+        <button type="submit" id="form-button" class="btn btn-primary" onclick="uploadFileFull()">Submit</button>
+    </form>
+
+<!--        form create product data-->
+<!--        <form hidden id="form">-->
+<!--            <div class="mb-3 mt-3">-->
+<!--                <label for="name" class="form-label">Name:</label>-->
+<!--                <input type="text" class="form-control" id="product_name" placeholder="Enter name">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label for="price" class="form-label">Price:</label>-->
+<!--                <input type="text" class="form-control" id="product_price" placeholder="Enter price">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label for="quantity" class="form-label">Quantity:</label>-->
+<!--                <input type="text" class="form-control" id="product_quantity" placeholder="Enter quantity">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label for="description" class="form-label">Description:</label>-->
+<!--                <input type="text" class="form-control" id="product_description" placeholder="Enter description">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">Category:</label>-->
+<!--                <div id="div-product_category"></div>-->
+<!--            </div>-->
+<!--            <button type="submit" id="form-product_button" class="btn btn-primary">Submit-->
+<!--            </button>-->
+<!--        </form>-->
+</div>
+</body>
+</html>

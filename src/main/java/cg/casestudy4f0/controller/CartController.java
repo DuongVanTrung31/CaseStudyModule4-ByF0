@@ -6,9 +6,10 @@ import cg.casestudy4f0.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 @CrossOrigin("*")
 @RequestMapping("/api")
 public class CartController {
-
+    private String key;
     @Autowired
     private OrderService orderService;
 
@@ -33,7 +34,9 @@ public class CartController {
         } else {
             cart.put(cartModel.getProduct_id(), cartModel);
         }
+//        session.setMaxInactiveInterval(9999);
         session.setAttribute("cart", cart);
+        key = session.getId();
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
