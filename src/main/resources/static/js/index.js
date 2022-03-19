@@ -11,7 +11,6 @@ function handleQty() {
         if ($button.hasClass('inc')) {
             var newVal = parseFloat(oldValue) + 1;
         } else {
-            // Don't allow decrementing below zero
             if (oldValue > 0) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
@@ -147,7 +146,7 @@ function preload() {
             const htmls = data.map(p => displayProducts(p)).join("")
             $('#preloader').html(`<div class='row featured__filter'>${htmls}</div>`)
             //set ảnh tạm thời
-            handleImg()
+            handleImg();
         }
     })
 
@@ -165,7 +164,7 @@ function displayProducts(product) {
                 </ul>
             </div>
             <div class="featured__item__text">
-                <h6><a>${product.name}</a></h6>
+                <h6><a onclick="detail(${product.id})">${product.name}</a></h6>
                 <h5>$ ${product.price}</h5>
             </div>
         </div>
@@ -259,7 +258,7 @@ function displayCart(item) {
     <tr>
         <td class="shoping__cart__item">
             <img src="../static/img/${item.product.image}" alt="Lỗi ảnh">
-                <h5>${item.product.name}</h5>
+                <h5 onclick="detail(${item.product.id})">${item.product.name}</h5>
         </td>
         <td class="shoping__cart__price">
             $ ${item.product.price}
@@ -295,11 +294,12 @@ function store() {
     event.preventDefault();
     breadcrumbStore("Store","product");
     contentStore();
+    loadStore();
     handleImg();
 }
 
 function contentStore () {
-    const htmls = `
+            const htmls = `
         <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-5">
@@ -346,7 +346,7 @@ function contentStore () {
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>16</span> Products found</h6>
+                                    <h6><span></span> Sản phẩm</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
@@ -357,18 +357,138 @@ function contentStore () {
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                       
+                    <div class="row" id="show-store">
                     </div>
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                     </div>
                 </div>
             </div>    
         </div>`
-
     $('.product').html(htmls)
+}
+
+function loadStore(page = 0) {
+    $.ajax({
+        type: 'GET',
+        url: `${url}/products/page?page=${page}`,
+        success: (data) => {
+            const htmls = data.content.map(p => displayProducts(p)).join("");
+            let page = ""
+            for (let i = 0; i < data.totalPages; i++) {
+                page += `<a onclick="loadStore(${i})">${i+1}</a>`
+            }
+            $('.product__pagination').html(page);
+            $('#show-store').html(htmls);
+            handleImg();
+    }
+    })
+    event.preventDefault();
+}
+
+function handleSearch() {
+    let key = $('#keyword').val()
+    $.ajax({
+        type: 'GET',
+        url: `${url}/products/search?search=${key}`,
+        success: (data) => {
+            const htmls = data.map(p => displayProducts(p)).join("");
+            breadcrumbStore("Store","product");
+            contentStore();
+            $('#show-store').html(htmls);
+            handleImg();
+            document.querySelector("#form-search").reset();
+        }
+    })
+    event.preventDefault();
+}
+
+function detail(id) {
+    $.ajax({
+        type: 'GET',
+        url: `${url}/products/${id}`,
+        success: (data) => {
+            let check = data.quantity < 1 ? "Hết hàng" : "Còn hàng";
+            const htmls = `
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large" src="../static/img/${data.image}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__text">
+                        <h3>${data.name}</h3>
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                            <span>(18 reviews)</span>
+                        </div>
+                        <div class="product__details__price">$ ${data.price}</div>
+                        <p>${data.description}</p>
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty"><span class="dec qtybtn">-</span>
+                                    <input type="text" value="1">
+                                <span class="inc qtybtn">+</span></div>
+                            </div>
+                        </div>
+                        <a onclick="handlePushCart(${id})" class="primary-btn">Thêm vào giỏ hàng</a>
+                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <ul>
+                            <li><b>Tình trạng:</b> <span> ${check}</span></li>
+                            <li><b>Giao hàng: </b> <span>01 ngày <samp> Miễn phí</samp></span></li>
+                            <li><b>Trọng lượng:</b> <span> ${data.weight} kg</span></li>
+                            <li><b>Share on</b>
+                                <div class="share">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Đánh giá</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
+            breadcrumbStore("Chi tiết","product-details")
+            handleImg();
+            $('.product-details').html(htmls);
+        }
+    })
+    event.preventDefault();
+}
+
+function handleReviews (id) {
+    $.ajax({
+        type: 'GET',
+        url: `${url}/review/${id}`,
+        success: (data) => {
+            const htmls = `<div class="product__details__tab__desc">
+                                    <h6>Products Infomation</h6>
+                                    <p></p>
+                                </div>`
+        }
+    })
 }

@@ -112,11 +112,12 @@ function editProductPost() {
             id: category,
         }
     };
+    let formData = new FormData();
+    formData.append("file", $('#file')[0].files[0])
+    formData.append("product", new Blob([JSON.stringify(newProduct)], {type : 'application/json'}))
     $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        contentType : false,
+        processData : false,
         type: "PUT",
         data: JSON.stringify(newProduct),
         url: `http://localhost:8080/api/products/${index}`,
@@ -141,7 +142,7 @@ function deleteProduct(id) {
 //hàm hiển thị table product data
 function displayProduct(product) {
     return `<tr><td>${product.name}</td><td>${product.price}</td><td>${product.quantity}</td><td>${product.weight}</td>
-            <td>${product.description}</td><td><img src="../static/images/${product.image}" alt="Lỗi"></td><td>${product.category.name}</td>
+            <td>${product.description}</td><td><img src="../static/img/${product.image}" alt="Lỗi"></td><td>${product.category.name}</td>
             <td><button class="btn btn-danger" onclick="deleteProduct(${product.id})">Delete</button></td>
             <td><button class="btn btn-warning" onclick="editProduct(${product.id})">Edit</button></td></tr>`;
 }
