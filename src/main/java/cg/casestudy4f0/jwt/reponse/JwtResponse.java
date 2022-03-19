@@ -1,4 +1,4 @@
-package cg.casestudy4f0.model.reponse;
+package cg.casestudy4f0.jwt.reponse;
 
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ public class JwtResponse {
     private String token;
     private final String type = "Bearer";
     private String userName;
-    private String fullName;
+    private String email;
     private Collection<? extends GrantedAuthority> role;
 
 }

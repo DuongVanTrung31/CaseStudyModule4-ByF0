@@ -20,56 +20,12 @@
     <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script defer src="../static/js/jquery-ui.min.js"></script>
-    <script defer src="../static/js/slide.js"></script>
+    <script src="../static/js/owl.carousel.min.js"></script>
+    <script src="../static/js/mixitup.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-<div class="humberger__menu__overlay"></div>
-<div class="humberger__menu__wrapper">
-    <div class="humberger__menu__logo">
-        <a href="#"><img src="img/logo.png" alt=""></a>
-    </div>
-    <div class="humberger__menu__cart">
-        <ul>
-            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-        </ul>
-        <div class="header__cart__price">Tổng tiền : <span>$150.00</span></div>
-    </div>
-    <div class="humberger__menu__widget">
-        <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i>Dăng nhập</a>
-        </div>
-    </div>
-    <nav class="humberger__menu__nav mobile-menu">
-        <ul>
-            <li class="active"><a href="./index.html">Trang chủ</a></li>
-            <li><a href="./shop-grid.html">Shop</a></li>
-            <li><a href="#">Dịch vụ</a>
-                <ul class="header__menu__dropdown">
-                    <li><a href="./shoping-cart.html">Giỏ hàng</a></li>
-                    <li><a href="./checkout.html">Thanh toán</a></li>
-                </ul>
-            </li>
-            <li><a href="./blog.html">Blog</a></li>
-            <li><a href="./contact.html">Liên hệ</a></li>
-        </ul>
-    </nav>
-    <div id="mobile-menu-wrap"></div>
-    <div class="header__top__right__social">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-        <a href="#"><i class="fa fa-pinterest-p"></i></a>
-    </div>
-    <div class="humberger__menu__contact">
-        <ul>
-            <li><i class="fa fa-envelope"></i> shopOgani@gmail.com</li>
-            <li>Ship miễn phí toàn quốc</li>
-        </ul>
-    </div>
-</div>
 <header class="header">
     <div class="header__top">
         <div class="container">
@@ -96,17 +52,17 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="img/logo.png" alt="loi"/></a>
+                    <a onclick="home()"><img src="../static/img/logo.png" alt="loi"/></a>
                 </div>
             </div>
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a href="admin.html">Trang chủ</a></li>
-                        <li><a href="./shop-grid.html">Shop</a></li>
+                        <li class="active"><a onclick="home()">Trang chủ</a></li>
+                        <li><a onclick="store()">Shop</a></li>
                         <li><a href="#">Dịch vụ</a>
                             <ul class="header__menu__dropdown">
-                                <li><a>Giỏ hàng</a></li>
+                                <li><a onclick="cart()">Giỏ hàng</a></li>
                                 <li><a href="./checkout.html">Thanh toán</a></li>
                             </ul>
                         </li>
@@ -243,12 +199,9 @@
     </div>
 </footer>
 </body>
-<script defer src="../static/js/bootstrap.min.js"></script>
 <script src="../static/js/index.js"></script>
-<script defer src="../static/js/jquery.nice-select.min.js"></script>
 <script defer src="../static/js/jquery.slicknav.js"></script>
-<script defer src="../static/js/jquery-3.3.1.min.js"></script>
+<script defer src="../static/js/main.js"></script>
 <script defer src="../static/js/jquery-ui.min.js"></script>
-<script defer src="../static/js/mixitup.min.js"></script>
-<script defer src="../static/js/owl.carousel.min.js"></script>
+<script defer src="../static/js/slide.js"></script>
 

@@ -936,7 +936,7 @@ ol {
 }
 
 .featured__item__text h6 a {
-	color: #252525;
+	color: #1456d0;
 }
 
 .featured__item__text h5 {
@@ -1007,7 +1007,7 @@ ol {
 }
 
 .latest-product__item__text h6 {
-	color: #252525;
+	color: #14d026;
 	margin-bottom: 8px;
 }
 
@@ -1907,8 +1907,8 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td {
-	padding-top: 30px;
-	padding-bottom: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	border-bottom: 1px solid #ebebeb;
 }
 
@@ -1920,6 +1920,7 @@ ol {
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
 	display: inline-block;
 	margin-right: 25px;
+	width: 20%;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
@@ -1947,7 +1948,7 @@ ol {
 
 .shoping__cart__table table tbody tr td.shoping__cart__item__close span {
 	font-size: 24px;
-	color: #b2b2b2;
+	color: #1c1c1c;
 	cursor: pointer;
 }
 
@@ -2023,7 +2024,6 @@ ol {
 	background: #f5f5f5;
 	padding: 30px;
 	padding-top: 20px;
-	margin-top: 50px;
 }
 
 .shoping__checkout h5 {
