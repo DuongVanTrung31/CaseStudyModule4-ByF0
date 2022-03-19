@@ -1,5 +1,5 @@
-
 const url = "http://localhost:8080/api"
+
 
 function content() {
     const htmls = `<div class="hero__item set-bg" data-setbg="../static/img/banner.jpg">
@@ -19,24 +19,64 @@ document.addEventListener('DOMContentLoaded', () => {
     content();
     getCategories()
     preload();
+    // handleCartUpdate();
 })
 
+const handlePushCart = (id) => {
+    console.log("click")
+    $.ajax({
+        type: 'GET',
+        url: `${url}/products/${id}`,
+        success: (data) => {
+            const item = {
+                product_id: data.id,
+                product_name: data.name,
+                price: data.price,
+                quantity: 1
+            }
+            $.ajax({
+                headers: {
+                    "Accept": 'application/json',
+                    "Content-Type": "application/json"
+                },
+                type: "POST",
+                url: `${url}/cart`,
+                data: JSON.stringify(item),
+                success: (res) => {
+                    console.log(...res)
+                    // handleCartUpdate()
+                },
+                error : () => console.log("lỗi")
+            })
+        }
+    })
+    event.preventDefault()
+}
 
-function handleCart() {
+
+function handleCartUpdate() {
     $.ajax({
         type: 'GET',
         url: `${url}/cart`,
-        success:(data) => {
+        success: (data) => {
+            console.log(data)
             const htmls = `
              <ul>
+<!--                    yêu thích-->
                 <li><a href="#"><i class="fa fa-heart"></i> <span>${data}</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>${data}</span></a></li>
+<!--                giỏ hàng-->
+                <li><a onclick="handleCartUpdate()"><i class="fa fa-shopping-bag"></i> <span>${data.length}</span></a></li>
              </ul>
-                 <div class="header__cart__price">Tổng tiền: <span>${data}</span></div>
+                 <div class="header__cart__price">Tổng tiền: <span>
+                   ${data.reduce((p) => {
+                p.price * p.quantity
+            }, 0)}</span></div>
+                
             `
             $('.header__cart').html(htmls);
         }
     })
+    event.preventDefault();
 }
 
 function getCategories() {
@@ -45,7 +85,7 @@ function getCategories() {
         url: `${url}/categories`,
         success: (data) => {
             const values = data.map(c => {
-               return `<li data-toggle="${c.id}" class="cate-${c.id}" onclick="handleCategory(${c.id})">${c.name}</li>`
+                return `<li data-toggle="${c.id}" class="cate-${c.id}" onclick="handleCategory(${c.id})">${c.name}</li>`
             }).join("")
 
             const htmls =
@@ -69,7 +109,7 @@ function getCategories() {
     });
 }
 
-function handleCategory(id){
+function handleCategory(id) {
     $.ajax({
         type: 'GET',
         url: `${url}/products/category/${id}`,
@@ -80,7 +120,8 @@ function handleCategory(id){
             $('#preloader').html(`<div class="row featured__filter">${htmls}</div>`)
             handleImg()
         }
-    });}
+    });
+}
 
 function preload() {
     $.ajax({
@@ -100,13 +141,12 @@ function preload() {
 }
 
 
-const handleImg = () =>  {
+const handleImg = () => {
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
         $(this).css('background-image', 'url(' + bg + ')')
     })
 }
-
 
 
 function displayProducts(product) {
@@ -117,7 +157,7 @@ function displayProducts(product) {
                 <ul class="featured__item__pic__hover">
                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    <li><a onclick="handlePushCart(${product.id})"><i class="fa fa-shopping-cart"></i></a></li>
                 </ul>
             </div>
             <div class="featured__item__text">
