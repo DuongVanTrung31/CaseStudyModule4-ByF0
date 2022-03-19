@@ -3,6 +3,7 @@ package cg.casestudy4f0.config;
 
 import cg.casestudy4f0.jwt.JwtEntryPoint;
 import cg.casestudy4f0.jwt.JwtTokenFilter;
+import cg.casestudy4f0.jwt.UserAccessDeniedHandler;
 import cg.casestudy4f0.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtEntryPoint jwtEntryPoint;
 
+    @Autowired
+    private UserAccessDeniedHandler userAccessDeniedHandler;
+
     @Bean
     public JwtTokenFilter jwtTokenFilter() {
         return new JwtTokenFilter();
@@ -54,8 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/api/auth/sign**","/api/products/**","/api/category/**","/api/products").permitAll()
+        http.cors().and().csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -66,8 +70,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.csrf().ignoringAntMatchers("/**");
+//        http.exceptionHandling().authenticationEntryPoint(jwtEntryPoint);
+//        http.authorizeRequests()
+//                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/**").access("hasRole('USER')")
+//                .anyRequest().authenticated()
+//                .and().formLogin().permitAll()
+//                .and().csrf().disable();
+//        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling().accessDeniedHandler(userAccessDeniedHandler);
+//        http.sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http.cors();
     }
 }

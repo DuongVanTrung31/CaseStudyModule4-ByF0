@@ -78,15 +78,6 @@ public class CartController {
     }
 
     //    Thanh toán
-    @PostMapping("/pay")
-    public HttpStatus pay(@RequestBody Order order, HttpSession session) {
-        if (orderService.addReceipt((Map<Long, CartModel>) session.getAttribute("cart"), order)) {
-            session.removeAttribute("cart");
-            return HttpStatus.OK;
-        }
-        return HttpStatus.BAD_REQUEST;
-    }
-
     //    Hiển thị tất cả sản phẩm trong giỏ
     @GetMapping("/cart")
     public ResponseEntity<?> showCartItems(HttpSession session) {

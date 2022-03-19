@@ -6,7 +6,6 @@ import cg.casestudy4f0.model.entity.Product;
 import cg.casestudy4f0.model.entity.User;
 import cg.casestudy4f0.repository.CartItemRepository;
 import cg.casestudy4f0.repository.ProductRepository;
-import cg.casestudy4f0.repository.UserRepository;
 import cg.casestudy4f0.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,12 +43,17 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
+    public void removeByUserId(Long id) {
+        cartRepo.removeByUserId(id);
+    }
+
+    @Override
     public void updateQuantity(int quantity, Long productId, Long userId) {
         cartRepo.updateQuantity(quantity,productId,userId);
     }
 
     @Override
-    public void deleteByUser_IdAndProduct_Id(Long userId, Long productId) {
-        cartRepo.deleteByUser_IdAndProduct_Id(userId,productId);
+    public void deleteByUserIdAndProductId(Long userId, Long productId) {
+        cartRepo.deleteByUserIdAndProductId(userId,productId);
     }
 }

@@ -10,7 +10,9 @@ public interface CartItemService {
 
     void updateQuantity(int quantity, Long productId, Long userId);
 
-    void deleteByUser_IdAndProduct_Id(Long userId, Long productId);
+    void deleteByUserIdAndProductId(Long userId, Long productId);
 
     void addCartItem(int quantity,Long productId,User user);
+
+    void removeByUserId(Long id);
 }
