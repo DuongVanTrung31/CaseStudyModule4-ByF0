@@ -89,7 +89,7 @@ public class ShoppingCartController {
         simpleMailMessage.setText("Tên Khách Hàng : " +order.getFullName() +'\n'+
                                     "Số điện thoại : "+order.getPhone() +'\n'+
                                     "Địa chỉ : " + order.getAddress()+'\n'+
-                                    "Tình trạng đơn hàng : "+order.getStatus().name()+'\n'+
+                                    "Tình trạng đơn hàng : "+order.getStatus().getStatus()+'\n'+
                                     "Ngày đặt hàng : "+order.getCreatedAt());
         cartItemService.removeByUserId(uid);
         mailSender.send(simpleMailMessage);

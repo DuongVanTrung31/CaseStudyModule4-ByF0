@@ -1,25 +1,6 @@
 const url = "http://localhost:8080/api"
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"))
-function handleQty() {
-    let proQty = $('.pro-qty');
-    proQty.prepend('<span class="dec qtybtn">-</span>');
-    proQty.append('<span class="inc qtybtn">+</span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
-        }
-        $button.parent().find('input').val(newVal);
-    });
-}
 
 //INIT WEB
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,7 +47,7 @@ function title() {
                             <span>Hoa quả sạch</span>
                             <h2>Cam kết <br>100% Organic</h2>
                             <p>Giao hàng miễn phí trên toàn quốc</p>
-                            <a onclick="store()" class="primary-btn">Xem thêm</a>
+                            <a href=""  onclick="store()" class="primary-btn">Xem thêm</a>
                         </div>
                     </div>
                     <section id="content-featured" class="featured spad"></section>`
@@ -82,9 +63,9 @@ function handleCartUpdate() {
             const htmls = `
              <ul>
 <!--                    yêu thích-->
-                <li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
+                <li><a href=""><i class="fa fa-heart"></i> <span></span></a></li>
 <!--                giỏ hàng-->
-                <li><a onclick="cart()"><i class="fa fa-shopping-bag"></i> <span>${data.length}</span></a></li>
+                <li><a href=""  onclick="cart()"><i class="fa fa-shopping-bag"></i> <span>${data.length}</span></a></li>
              </ul>
                  <div class="header__cart__price">Tổng tiền: <span>
                    ${data.reduce((total, p) => {
@@ -213,7 +194,7 @@ const breadcrumbStore = (title,classname) => {
                     <div class="breadcrumb__text">
                         <h2>${title}</h2>
                         <div class="breadcrumb__option">
-                            <a onclick="home()">Trang chủ</a>
+                            <a href="" onclick="home()">Trang chủ</a>
                             <span>${title}</span>
                         </div>
                     </div>
@@ -258,7 +239,7 @@ function shoppingCart() {
                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="shoping__cart__btns">
-                                    <a onclick="home()" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+                                    <a href="" onclick="home()" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -312,12 +293,17 @@ function displayCart(item) {
 
 //  REMOVE-ITEM-CART --> AJAX-CART
 function removeItem(pid) {
-    $.ajax({
-        type: 'DELETE',
-        url: `${url}/cart/${user.id}/${pid}`,
-        success: () => shoppingCart()
-    })
-    event.preventDefault()
+    if(confirm("Bạn chắc chắn muốn xoá sản phẩm này ?")) {
+        $.ajax({
+            type: 'DELETE',
+            url: `${url}/cart/${user.id}/${pid}`,
+            success: () => {
+                shoppingCart()
+                handleCartUpdate()
+            }
+        })
+        event.preventDefault()
+    }
 }
 
 //  PAGES STORE-PRODUCT
@@ -340,9 +326,9 @@ function contentStore () {
                         <div class="sidebar__item">
                             <h4>Loại sản phẩm</h4>
                             <ul>
-                               <li>Hoa quả</li>
-                               <li>Rau củ</li>
-                               <li>Hạt khô</li>
+                               <li onclick="storeCategory(1)">Hoa quả</li>
+                               <li onclick="storeCategory(2)">Rau củ</li>
+                               <li onclick="storeCategory(3)">Hạt khô</li>
                             </ul>
                         </div>
                         <div class="sidebar__item">
@@ -372,7 +358,7 @@ function contentStore () {
                                     <span>Sort By</span>
                                     <select style="display: none;">
                                         <option value="0">Default</option>
-                                        <option value="0">Default</option>
+                                        <option value="1">Default</option>
                                     </select><div class="nice-select" tabindex="0"><span class="current">Default</span><ul class="list"><li data-value="0" class="option selected">Default</li><li data-value="0" class="option">Default</li></ul></div>
                                 </div>
                             </div>
@@ -409,7 +395,7 @@ function loadStore(page = 0) {
             const htmls = data.content.map(p => displayProducts(p)).join("");
             let page = ""
             for (let i = 0; i < data.totalPages; i++) {
-                page += `<a onclick="loadStore(${i})">${i+1}</a>`
+                page += `<a href="" onclick="loadStore(${i})">${i+1}</a>`
             }
             $('.product__pagination').html(page);
             $('#show-store').html(htmls);
@@ -474,18 +460,18 @@ function detail(id) {
                                 <span class="inc qtybtn">+</span></div>
                             </div>
                         </div>
-                        <a onclick="handlePushCart(${id})" class="primary-btn">Thêm vào giỏ hàng</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <a href="" onclick="handlePushCart(${id})" class="primary-btn">Thêm vào giỏ hàng</a>
+                        <a href="" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
                             <li><b>Tình trạng:</b> <span> ${check}</span></li>
                             <li><b>Giao hàng: </b> <span>01 ngày <samp> Miễn phí</samp></span></li>
                             <li><b>Trọng lượng:</b> <span> ${data.weight} kg</span></li>
                             <li><b>Share on</b>
                                 <div class="share">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href=""><i class="fa fa-facebook"></i></a>
+                                    <a href=""><i class="fa fa-twitter"></i></a>
+                                    <a href=""><i class="fa fa-instagram"></i></a>
+                                    <a href=""><i class="fa fa-pinterest"></i></a>
                                 </div>
                             </li>
                         </ul>
@@ -624,30 +610,104 @@ function contentCheckout() {
 
 // CHECKOUT ORDER --> AJAX-CART-PAY
 function handleCheckoutSubmit () {
-    let fullName = $('#fullname').val()
-    let address = $('#address').val()
-    let phone = $('#phone').val()
-    let email = $('#email').val()
-    let note = $('#note').val()
-    const order = {
-        fullName: fullName,
-        address: address,
-        email: email,
-        phone: phone,
-        note: note
+    if(confirm("Hãy đồng ý để xác nhận thanh toán")) {
+        let fullName = $('#fullname').val()
+        let address = $('#address').val()
+        let phone = $('#phone').val()
+        let email = $('#email').val()
+        let note = $('#note').val()
+        const order = {
+            fullName: fullName,
+            address: address,
+            email: email,
+            phone: phone,
+            note: note
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            url: `${url}/pay/${user.id}`,
+            data: JSON.stringify(order),
+            success: (resp) => {
+                handleCartUpdate();
+                checkout();
+            }
+        })
+        event.preventDefault()
     }
+}
+
+// FORM LOGIN MODAL
+function loginModal() {
+    const htmls = `
+    <div class="form__modal">
+        <div class="form__header">
+            <h3 class="form-title">Đăng nhập</h3>
+        </div>
+        <label class="form-text">Tên tài khoản :</label>
+        <input type="text"
+                class="form__input"
+                placeholder="Nhập tên tài khoản"
+                id="username" required
+        >
+        <label class="form-text">Mật khẩu :</label>
+        <input type="password"
+                class="form__input"
+                placeholder="Nhập mật khẩu tài khoản"
+                id="password" required
+        >
+        <span id="error_login"></span>
+        <div class="form__checkbox">
+            <input type="checkbox" />
+            <small>Nhớ mật khẩu</small>
+        </div>
+        <button onclick="handleLogin()"
+                class="btn-login"
+        >Đăng nhập
+        </button>
+        <p>Bạn chưa có tài khoản ? <a>Đăng ký ngay !</a> </p>
+    </div>`
+    $('#login-modal').html(htmls);
+    $('#login-modal').attr("hidden",false);
+    event.preventDefault()
+}
+
+// AUTHORITY --> AJAX AUTH
+function handleLogin() {
+    let username = $('#username').val();
+    let password = $('#password').val();
+    let account = {
+        username: username,
+        password: password
+    };
     $.ajax({
+        url: `http://localhost:8080/api/auth/login`,
+        type: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-type': 'application/json'
         },
-        type: "POST",
-        url: `${url}/pay/${user.id}`,
-        data: JSON.stringify(order),
-        success: (resp) => {
-            handleCartUpdate();
-            checkout();
+        data: JSON.stringify(account),
+        success: function (data) {
+            console.log(data);
+            if (data.status === 202) {
+                document.getElementById("error_login").innerHTML = "Tài khoản hoặc mật khẩu không đúng!"
+                return false;
+            } else {
+                if(data.role[0].authority == "ROLE_USER") {
+                    $('#link-login').remove();
+                    $('#login-modal').remove();
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data));
+                    $('.header__top__right__auth').html(`<a style="color: #7fad39; font-weight: bold" >Chào mừng ${data.fullName}</a>`);
+                } else {
+                    window.location.href = "admin.html";
+                }
+            }
         }
-    })
-    event.preventDefault()
+    });
+    event.preventDefault();
 }
