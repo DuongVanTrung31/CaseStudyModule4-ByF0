@@ -1,5 +1,6 @@
 package cg.casestudy4f0.jwt;
 
+import cg.casestudy4f0.model.dto.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -17,7 +19,7 @@ public class JwtService {
     private static final long  EXPIRE_TIME = 86400000000L;
 
     public String createToken(Authentication authentication) {
-        User userPrinciple = (User) authentication.getPrincipal();
+        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userPrinciple.getUsername())
                 .setIssuedAt(new Date())
@@ -47,5 +49,12 @@ public class JwtService {
 
     public String getUsernameFromToken(String token){
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getToken(String Authorization){
+        if(Authorization != null && Authorization.startsWith("Bearer")) {
+            return Authorization.replace("Bearer", "");
+        }
+        return null;
     }
 }

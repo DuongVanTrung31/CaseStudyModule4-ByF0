@@ -1,5 +1,6 @@
 package cg.casestudy4f0.service.impl;
 
+import cg.casestudy4f0.model.dto.UserPrinciple;
 import cg.casestudy4f0.model.entity.User;
 import cg.casestudy4f0.repository.UserRepository;
 import cg.casestudy4f0.service.UserService;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService  {
         if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return user;
+        return UserPrinciple.build(user);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package cg.casestudy4f0.controller;
 
 import cg.casestudy4f0.jwt.JwtService;
+import cg.casestudy4f0.model.dto.LoginForm;
 import cg.casestudy4f0.model.dto.SignUpForm;
 import cg.casestudy4f0.model.entity.User;
-import cg.casestudy4f0.model.reponse.JwtResponse;
+import cg.casestudy4f0.jwt.reponse.JwtResponse;
 import cg.casestudy4f0.repository.RoleRepository;
 import cg.casestudy4f0.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,17 +50,15 @@ public class AuthController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                        (user.getUsername(), user.getPassword()));
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginForm user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = jwtService.createToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername()).get();
-        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(), currentUser.getFullName(), userDetails.getAuthorities());
+        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(), currentUser.getEmail(), userDetails.getAuthorities());
         return ResponseEntity.ok(jwtResponse);
     }
 

@@ -2,6 +2,7 @@ package cg.casestudy4f0.model.entity;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +14,8 @@ import java.util.Collections;
 @Entity
 @Table(name = "users")
 @Data
-public class User implements UserDetails {
+@NoArgsConstructor
+public class User {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,40 +31,11 @@ public class User implements UserDetails {
     @ManyToOne
     private Role role;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public User(String username, String password, String email, Role role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(getRole());
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

@@ -44,12 +44,29 @@ public class ProductController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Product>> showAllPage(@PageableDefault(value = 5) Pageable pageable) {
+    public ResponseEntity<Page<Product>> showAllPage(@PageableDefault(value = 4) Pageable pageable) {
         Page<Product> products = productService.getAll(pageable);
         if (!products.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> edit(@RequestPart("file")MultipartFile file,
+                                     @RequestPart("product") Product product) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File(upload + fileName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        product.setImage(file.getOriginalFilename());
+        Category category = new Category();
+        category.setId(product.getCategory().getId());
+        product.setCategory(category);
+        productService.save(product);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     @PostMapping("/upload1")
@@ -80,7 +97,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Iterable<Product>> showAllByName(@RequestParam("search") String search) {
+    public ResponseEntity<?> showAllByName(@RequestParam("search") String search) {
         Iterable<Product> products = productService.findAllByNameContaining(search);
         if (!products.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
