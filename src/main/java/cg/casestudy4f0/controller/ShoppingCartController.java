@@ -5,6 +5,7 @@ import cg.casestudy4f0.jwt.JwtService;
 import cg.casestudy4f0.model.entity.CartItem;
 import cg.casestudy4f0.model.entity.Order;
 import cg.casestudy4f0.model.entity.User;
+import cg.casestudy4f0.model.entity.enums.Status;
 import cg.casestudy4f0.service.CartItemService;
 import cg.casestudy4f0.service.OrderDetailService;
 import cg.casestudy4f0.service.OrderService;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -73,6 +76,9 @@ public class ShoppingCartController {
     @PostMapping("/pay/{uid}")
     public ResponseEntity<?> pay(@RequestBody Order order,@PathVariable("uid")Long uid) {
         User user = userService.findById(uid).get();
+        order.setUser(user);
+        order.setCreatedAt(LocalDate.now());
+        order.setStatus(Status.PENDING);
         List<CartItem> cartItems = cartItemService.getCartItemByUser(user);
         boolean payCheck = orderService.addReceipt(cartItems,order);
         cartItemService.removeByUserId(uid);

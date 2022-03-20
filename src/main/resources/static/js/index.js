@@ -21,13 +21,14 @@ function handleQty() {
     });
 }
 
-//preloader index
+//INIT WEB
 document.addEventListener('DOMContentLoaded', () => {
     home();
 })
 
+// PAGES HOME
 function home() {
-    content();
+    title();
     getCategories();
     preload();
     handleCartUpdate();
@@ -35,6 +36,7 @@ function home() {
     event.preventDefault();
 }
 
+//  LOAD-IMG
 const handleImg = () => {
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
@@ -42,21 +44,23 @@ const handleImg = () => {
     })
 }
 
-const handlePushCart = (id) => {
+//  PUSHING-TO-CART --> AJAX-CART
+const handlePushCart = (id, qty = 1) => {
     $.ajax({
         headers: {
             "Accept": 'application/json',
             "Content-Type": "application/json"
         },
         type: "POST",
-        url: `${url}/cart/${user.id}/${id}/1`,
+        url: `${url}/cart/${user.id}/${id}/${qty}`,
         success: () => handleCartUpdate(),
         error: () => console.log("lỗi")
     })
     event.preventDefault();
 }
 
-function content() {
+//  BANNER-HEADING
+function title() {
     const htmls = `<div class="hero__item set-bg" data-setbg="../static/img/banner.jpg">
                         <div class="hero__text">
                             <span>Hoa quả sạch</span>
@@ -69,6 +73,7 @@ function content() {
     $('.context').html(htmls);
 }
 
+//  UPDATE-CART-ICON --> AJAX-CART
 function handleCartUpdate() {
     $.ajax({
         type: 'GET',
@@ -93,6 +98,7 @@ function handleCartUpdate() {
     event.preventDefault();
 }
 
+//  HOME-CONTENT --> AJAX-GET-CATE
 function getCategories() {
     $.ajax({
         type: 'GET',
@@ -122,6 +128,7 @@ function getCategories() {
     });
 }
 
+//  LOAD-HOME-CONTENT-BY-CATE --> AJAX-PRODUCTS-CATE_ID
 function handleCategory(id) {
     $.ajax({
         type: 'GET',
@@ -136,6 +143,23 @@ function handleCategory(id) {
     });
 }
 
+//  LOAD-STORE-CONTENT-BY-CATE --> AJAX-PRODUCTS-CATE_ID
+function storeCategory(id) {
+    $.ajax({
+        type: 'GET',
+        url: `${url}/products/category/${id}`,
+        success: (data) => {
+            const htmls = data.map(p => displayProducts(p)).join("")
+            breadcrumbStore("Store","product");
+            contentStore();
+            $('#show-store').html(htmls)
+            handleImg()
+        }
+    });
+    // event.preventDefault()
+}
+
+//  LOAD-HOME-CONTENT-INIT --> AJAX-PRODUCTS
 function preload() {
     $.ajax({
         type: 'GET',
@@ -152,6 +176,7 @@ function preload() {
 
 }
 
+//  DISPLAY-PRODUCT
 function displayProducts(product) {
     return `
     <div class="col-lg-3 col-md-4 col-sm-6">
@@ -171,6 +196,7 @@ function displayProducts(product) {
      </div>`
 }
 
+//  PAGES SHOPPING-CART
 function cart() {
     event.preventDefault();
     breadcrumbStore("Giỏ hàng", "shoping-cart");
@@ -178,6 +204,7 @@ function cart() {
     handleImg()
 }
 
+//  LOAD-BREADCRUMB-TITLE
 const breadcrumbStore = (title,classname) => {
     let htmls = `<section class="breadcrumb-section set-bg" data-setbg="../static/img/breadcrumb.jpg">
         <div class="container">
@@ -198,6 +225,7 @@ const breadcrumbStore = (title,classname) => {
     $('.context').html(htmls);
 }
 
+//  LOAD-CART-CONTENT --> AJAX-CART
 function shoppingCart() {
     $.ajax({
         type: 'GET',
@@ -230,21 +258,21 @@ function shoppingCart() {
                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="shoping__cart__btns">
-                                <a onclick="home()" class="primary-btn cart-btn">Mua tiếp</a>
+                                    <a onclick="home()" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="shoping__checkout">
-                                   <h5>Giỏ hàng</h5>
+                                   <h5>Giỏ hàng của bạn</h5>
                                        <ul>
-                                           <li>Sản phẩm<span>${data.length}</span></li>
-                                           <li>Tổng tiền
+                                           <li>Số lượng sản phẩm trong giỏ hàng<span>${data.length}</span></li>
+                                           <li>Thành tiền 
                                            <span>$ ${data.reduce((total, p) => 
                                                         {return total + p.quantity * p.product.price}, 0)}
                                            </span>
                                            </li>
                                        </ul>
-                                   <a href="#" class="primary-btn">Thanh toán giỏ hàng</a>
+                                   <a href="" onclick="checkout()" class="primary-btn">Thanh toán giỏ hàng</a>
                                 </div>
                             </div>
                        </div>`
@@ -253,6 +281,7 @@ function shoppingCart() {
     })
 }
 
+//  DISPLAY-ITEM-CART
 function displayCart(item) {
     return `
     <tr>
@@ -281,6 +310,7 @@ function displayCart(item) {
     </tr`
 }
 
+//  REMOVE-ITEM-CART --> AJAX-CART
 function removeItem(pid) {
     $.ajax({
         type: 'DELETE',
@@ -290,6 +320,7 @@ function removeItem(pid) {
     event.preventDefault()
 }
 
+//  PAGES STORE-PRODUCT
 function store() {
     event.preventDefault();
     breadcrumbStore("Store","product");
@@ -298,6 +329,7 @@ function store() {
     handleImg();
 }
 
+//  STORE-CONTENT
 function contentStore () {
             const htmls = `
         <div class="container">
@@ -358,6 +390,7 @@ function contentStore () {
                         </div>
                     </div>
                     <div class="row" id="show-store">
+                    
                     </div>
                     <div class="product__pagination">
                     </div>
@@ -367,6 +400,7 @@ function contentStore () {
     $('.product').html(htmls)
 }
 
+//  LOAD-STORE-PAGEABLE --> AJAX-PRODUCTS-PAGEABLE
 function loadStore(page = 0) {
     $.ajax({
         type: 'GET',
@@ -385,6 +419,7 @@ function loadStore(page = 0) {
     event.preventDefault();
 }
 
+// SEARCH-FORM AJAX-PRODUCTS-SEARCH
 function handleSearch() {
     let key = $('#keyword').val()
     $.ajax({
@@ -402,6 +437,7 @@ function handleSearch() {
     event.preventDefault();
 }
 
+// PAGES PRODUCT-DETAIL --> AJAX-PRODUCTS-DETAIL
 function detail(id) {
     $.ajax({
         type: 'GET',
@@ -480,6 +516,7 @@ function detail(id) {
     event.preventDefault();
 }
 
+// REVIEWS --> AJAX-REVIEW-PRODUCT_ID
 function handleReviews (id) {
     $.ajax({
         type: 'GET',
@@ -491,4 +528,126 @@ function handleReviews (id) {
                                 </div>`
         }
     })
+}
+
+// PAGES CHECKOUT
+function checkout() {
+    breadcrumbStore("Thanh toán","checkout")
+    contentCheckout();
+    handleImg();
+    event.preventDefault()
+}
+
+// CONTENT-CHECKOUT --> AJAX-CART
+function contentCheckout() {
+    $.ajax({
+        type: 'GET',
+        url: `${url}/cart/${user.id}`,
+        success: (data) => {
+            let sum = data.reduce((total, p) => total + p.quantity * p.product.price, 0)
+            const cart = data.map(item =>
+                `<li>${item.product.name} x ${item.quantity}<span>$ ${item.product.price * item.quantity}</span></li>`
+            ).join("")
+            const htmls = `
+                        <div class=container>
+                            <div class="checkout__form">
+                                <h4>Thông tin giao hàng</h4>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-6">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="checkout__input">
+                                                        <p>Họ và tên<span>*</span></p>
+                                                        <input type="text" id="fullname" placeholder="Nhập họ và tên">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="checkout__input">
+                                                <p>Địa chỉ nhận hàng<span>*</span></p>
+                                                <input type="text" id="address" placeholder="Nhập địa chỉ" class="checkout__input__add">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="checkout__input">
+                                                        <p>Số điện thoại<span>*</span></p>
+                                                        <input type="text" id="phone" placeholder="Nhập số điên thoại">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="checkout__input">
+                                                        <p>Email<span>*</span></p>
+                                                        <input type="text" id="email" placeholder="Nhập email">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="checkout__input">
+                                                <p>Ý kiến thêm<span>*</span></p>
+                                                <input type="text" id="note" placeholder="Ghi chú thêm">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="checkout__order">
+                                                <h4>Hoá đơn của bạn</h4>
+                                                <div class="checkout__order__products">Tên sản phẩm <span>Tổng tiền</span></div>
+                                                <ul>
+                                                    ${cart}
+                                                </ul>
+                                                <div class="checkout__order__subtotal">Ước tính <span>$ ${sum}</span></div>
+                                                <div class="checkout__order__total">Thành tiền <span>$ ${sum}</span></div>
+                                                <div class="checkout__input__checkbox">
+                                                    <label for="payment">
+                                                        Check Payment
+                                                        <input type="checkbox" id="payment">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="checkout__input__checkbox">
+                                                    <label for="paypal">
+                                                        Paypal
+                                                        <input type="checkbox" id="paypal">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <button type="submit" onclick="handleCheckoutSubmit()" class="site-btn">Thanh toán</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>`
+            $('.checkout').html(htmls)
+        }
+    })
+    event.preventDefault()
+}
+
+// CHECKOUT ORDER --> AJAX-CART-PAY
+function handleCheckoutSubmit () {
+    let fullName = $('#fullname').val()
+    let address = $('#address').val()
+    let phone = $('#phone').val()
+    let email = $('#email').val()
+    let note = $('#note').val()
+    const order = {
+        fullName: fullName,
+        address: address,
+        email: email,
+        phone: phone,
+        note: note
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        url: `${url}/pay/${user.id}`,
+        data: JSON.stringify(order),
+        success: (resp) => {
+            handleCartUpdate();
+            checkout();
+        }
+    })
+    event.preventDefault()
 }
