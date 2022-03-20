@@ -15,7 +15,7 @@ public class JwtResponse {
     private String token;
     private final String type = "Bearer";
     private String userName;
+    private String fullName;
     private String email;
     private Collection<? extends GrantedAuthority> role;
-
 }

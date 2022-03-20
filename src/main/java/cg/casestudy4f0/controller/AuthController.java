@@ -58,7 +58,7 @@ public class AuthController {
         String jwt = jwtService.createToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername()).get();
-        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(), currentUser.getEmail(), userDetails.getAuthorities());
+        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(),currentUser.getFullName(),currentUser.getEmail(), userDetails.getAuthorities());
         return ResponseEntity.ok(jwtResponse);
     }
 

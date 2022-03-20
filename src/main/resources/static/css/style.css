@@ -99,6 +99,7 @@ a:focus {
 	text-decoration: none;
 	outline: none;
 	color: #ffffff;
+	cursor: pointer;
 }
 
 ul,
@@ -3466,4 +3467,117 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+}
+
+
+/*modal--login*/
+
+.fade__fullfill {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 4;
+}
+
+.fade__fullfill :before {
+	 display: none
+ }
+
+.fade__fullfill :after {
+	 display: block
+ }
+
+.form__modal {
+	position: relative;
+	margin: 0 auto;
+	width: 400px;
+	overflow: hidden;
+	border-radius: 12px;
+	border: 1px solid #ccc;
+	background: white;
+	padding: 20px 30px;
+	animation: showModal linear 0.5s;
+}
+.form__header {
+	background: linear-gradient(135deg, rgb(20, 208, 38), #ffdd00,#7fad39);
+	padding: 30px;
+	border-radius: 8px;
+}
+
+
+.form-title {
+	text-align: center;
+	color: #730fbb;
+}
+
+
+.form-text {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.form__modal span {
+	margin-top: 20px;
+	color: red;
+}
+
+.form__input {
+	width: 100%;
+	border: 1px solid rgb(184, 181, 181);
+	border-radius: 6px;
+	font-size: 16px;
+	padding: 8px 12px;
+}
+
+
+.form__checkbox {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	margin-top: 20px;
+}
+
+.form__input input {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.form__checkbox small {
+	margin-left: 12px;
+	line-height: 24px;
+}
+
+
+.btn-login {
+	width: 100%;
+	margin: 18px 0;
+	line-height: 50px;
+	border-radius: 20px;
+	border: none;
+	background: #7fad39;
+	color: white;
+}
+
+.btn-login:hover {
+	 color:rgb(228, 57, 5);
+	 opacity: 0.8;
+	 cursor: pointer;
+	 transition: all ease-in 0.5s;
+ }
+
+
+@keyframes showModal {
+	from {
+		top: -200px;
+		opacity: 0;
+	} to {
+		  top: 0;
+		  opacity: 1;
+	  }
 }
