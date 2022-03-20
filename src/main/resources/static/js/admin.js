@@ -90,6 +90,7 @@ function editProduct(id) {
                 editProductPost()
             };
             getCategory();
+            // getProductByPage(0)
         }
     });
 }
@@ -122,7 +123,7 @@ function editProductPost() {
         data: JSON.stringify(newProduct),
         url: `http://localhost:8080/api/products/${index}`,
         success: function () {
-            getProduct()
+            getProductByPage(0)
         }
     });
     event.preventDefault();
@@ -134,7 +135,7 @@ function deleteProduct(id) {
         type: "DELETE",
         url: `http://localhost:8080/api/products/${id}`,
         success: function () {
-            getProduct()
+            getProductByPage(0)
         }
     });
 }
@@ -189,6 +190,8 @@ function getProductByPage(page) {
             document.getElementById("productList").innerHTML = content;
             document.getElementById("displayPage").innerHTML = displayPage(data)
             document.getElementById("form1").hidden = true;
+            document.getElementById("btnProductList").hidden = true;
+            document.getElementById("displayPage").hidden = false;
             //điều kiện bỏ nút previous
             if (data.pageable.pageNumber === 0) {
                 document.getElementById("backup").hidden = true
@@ -235,6 +238,36 @@ function searchProduct() {
     });
     event.preventDefault();
 }
-
-getProduct()
+function displayOrdersHeader() {
+    return `<tr><th>Full Name</th>
+            <th>Address</th>
+            <th>Created At</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Note</th>
+            <th>Status</th>
+            </tr>`
+}
+function getOrdersByPage() {
+    $.ajax({
+        type: "GET",
+        url: `http://localhost:8080/api/orders`,
+        success: function (data) {
+            let content = displayOrdersHeader();
+            for (let i = 0; i < data.length; i++) {
+                content += displayOrder(data[i]);
+            }
+            document.getElementById("productList").innerHTML = content;
+            document.getElementById("displayPage").hidden = true;
+            document.getElementById("form1").hidden = true;
+            document.getElementById("btnProductList").hidden = false;
+        }
+    });
+}
+function displayOrder(order) {
+    return `<tr><td>${order.fullName}</td><td>${order.address}</td><td>${order.createdAt}</td><td>${order.email}</td><td>${order.phone}</td>
+            <td>${order.note}</td><td>${order.status}</td></tr>`;
+}
+document.getElementById("btnProductList").hidden = true;
+getProductByPage(0)
 getCategory()

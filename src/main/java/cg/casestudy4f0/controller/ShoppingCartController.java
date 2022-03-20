@@ -90,7 +90,8 @@ public class ShoppingCartController {
                                     "Số điện thoại : "+order.getPhone() +'\n'+
                                     "Địa chỉ : " + order.getAddress()+'\n'+
                                     "Tình trạng đơn hàng : "+order.getStatus().name()+'\n'+
-                                    "Ngày đặt hàng : "+order.getCreatedAt());
+                                    "Ngày đặt hàng : "+order.getCreatedAt()+
+                                    "Xin cảm ơn quý khách !!!");
         cartItemService.removeByUserId(uid);
         mailSender.send(simpleMailMessage);
         return new ResponseEntity<>(payCheck,HttpStatus.OK);
