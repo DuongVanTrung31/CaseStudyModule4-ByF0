@@ -1,23 +1,22 @@
 package cg.casestudy4f0.controller;
 
 
-import cg.casestudy4f0.jwt.JwtService;
 import cg.casestudy4f0.model.entity.CartItem;
 import cg.casestudy4f0.model.entity.Order;
 import cg.casestudy4f0.model.entity.User;
 import cg.casestudy4f0.model.entity.enums.Status;
 import cg.casestudy4f0.service.CartItemService;
-import cg.casestudy4f0.service.OrderDetailService;
 import cg.casestudy4f0.service.OrderService;
 import cg.casestudy4f0.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -26,6 +25,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class ShoppingCartController {
 
+    @Autowired
+    JavaMailSender mailSender;
 
     @Autowired
     UserService userService;
@@ -76,12 +77,22 @@ public class ShoppingCartController {
     @PostMapping("/pay/{uid}")
     public ResponseEntity<?> pay(@RequestBody Order order,@PathVariable("uid")Long uid) {
         User user = userService.findById(uid).get();
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         order.setUser(user);
         order.setCreatedAt(LocalDate.now());
         order.setStatus(Status.PENDING);
+        simpleMailMessage.setTo(order.getEmail());
+        simpleMailMessage.setSubject("Mail Tri Ân Khách Hàng");
         List<CartItem> cartItems = cartItemService.getCartItemByUser(user);
         boolean payCheck = orderService.addReceipt(cartItems,order);
+        simpleMailMessage.setText("Cảm ơn quý khách đã mua hàng tại shop");
+        simpleMailMessage.setText("Tên Khách Hàng : " +order.getFullName() +'\n'+
+                                    "Số điện thoại : "+order.getPhone() +'\n'+
+                                    "Địa chỉ : " + order.getAddress()+'\n'+
+                                    "Tình trạng đơn hàng : "+order.getStatus().name()+'\n'+
+                                    "Ngày đặt hàng : "+order.getCreatedAt());
         cartItemService.removeByUserId(uid);
+        mailSender.send(simpleMailMessage);
         return new ResponseEntity<>(payCheck,HttpStatus.OK);
     }
 
