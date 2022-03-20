@@ -23,7 +23,8 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/products")
 public class ProductController {
-    @Value("C:\\Users\\Cuong\\OneDrive\\Máy tính\\CaseStudyModule4-ByF0\\src\\main\\resources\\static\\img\\")
+//    @Value("C:\\Users\\Cuong\\OneDrive\\Máy tính\\CaseStudyModule4-ByF0\\src\\main\\resources\\static\\img\\")
+    @Value("${upload.path}")
     private String upload;
 
     @Autowired
