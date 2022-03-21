@@ -331,22 +331,6 @@ function contentStore () {
                                <li onclick="storeCategory(3)">Hạt khô</li>
                             </ul>
                         </div>
-                        <div class="sidebar__item">
-                            <h4>Giá cả</h4>
-                            <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" data-min="10" data-max="999">
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 100%;"></span>
-                                <div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 0%; width: 100%;"></div></div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <input type="text" id="minamount">
-                                        <input type="text" id="maxamount">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -668,7 +652,7 @@ function loginModal() {
                 class="btn-login"
         >Đăng nhập
         </button>
-        <p>Bạn chưa có tài khoản ? <a>Đăng ký ngay !</a> </p>
+        <p>Bạn chưa có tài khoản ? <a onclick="signUpForm()">Đăng ký ngay !</a> </p>
     </div>`
     $('#login-modal').html(htmls);
     $('#login-modal').attr("hidden",false);
@@ -710,4 +694,77 @@ function handleLogin() {
         }
     });
     event.preventDefault();
+}
+
+
+function signUpForm() {
+    const htmls = `
+    <div class="form__modal">
+        <div class="form__header">
+            <h3 class="form-title">Đăng ký</h3>
+        </div>
+        <span id="error_login"></span>
+        <label class="form-text">Tên tài khoản :</label>
+        <input type="text"
+                class="form__input"
+                placeholder="Nhập tên tài khoản"
+                id="username" required
+        >
+        <label class="form-text">Mật khẩu :</label>
+        <input type="password"
+                class="form__input"
+                placeholder="Nhập mật khẩu tài khoản"
+                id="password" required
+        >
+        <label class="form-text">Email :</label>
+        <input type="email"
+                class="form__input"
+                placeholder="Nhập email đăng ký"
+                id="email" required
+        >
+         <label class="form-text">Họ và tên :</label>
+        <input type="text"
+                class="form__input"
+                placeholder="Nhập họ và tên đăng ký"
+                id="fullname" required
+        >
+        <button onclick="handleSignUp()"
+                class="btn-login"
+        >Đăng ký
+        </button>
+    </div>`
+    $('#login-modal').html(htmls);
+}
+
+function handleSignUp() {
+    let username = $('#username').val();
+    let password = $('#password').val();
+    let email = $('#email').val();
+    let fullName = $('#fullname').val();
+    let roleName = "ROLE_USER";
+    const signup = {
+        username: username,
+        password: password,
+        email: email,
+        fullName: fullName,
+        roleName: roleName
+    }
+    $.ajax({
+        url: `http://localhost:8080/api/auth/signup`,
+        type: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        data: JSON.stringify(signup),
+        success: (data) => {
+            if(data === 201) {
+                document.getElementById("error_login").innerHTML = "Tài khoản đã tồn tại!"
+            } else {
+                $('.form__modal').remove();
+                loginModal();
+            }
+        }
+    })
+    event.preventDefault()
 }

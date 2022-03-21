@@ -189,7 +189,7 @@ function getProductByPage(page) {
             }
             document.getElementById("productList").innerHTML = content;
             document.getElementById("displayPage").innerHTML = displayPage(data)
-            document.getElementById("form1").hidden = true;
+            // document.getElementById("form1").hidden = true
             document.getElementById("btnProductList").hidden = true;
             document.getElementById("displayPage").hidden = false;
             //điều kiện bỏ nút previous
