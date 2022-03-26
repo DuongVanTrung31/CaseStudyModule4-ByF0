@@ -616,6 +616,7 @@ function handleCheckoutSubmit () {
             url: `${url}/pay/${user.id}`,
             data: JSON.stringify(order),
             success: (resp) => {
+                alert("Đặt hàng thành công, kiểm tra email để biết thêm chi tiết")
                 handleCartUpdate();
                 checkout();
             }
@@ -696,7 +697,7 @@ function handleLogin() {
     event.preventDefault();
 }
 
-
+// SIGNUP FORM
 function signUpForm() {
     const htmls = `
     <div class="form__modal">
@@ -736,6 +737,7 @@ function signUpForm() {
     $('#login-modal').html(htmls);
 }
 
+// --> AJAX AUTH SIGNUP
 function handleSignUp() {
     let username = $('#username').val();
     let password = $('#password').val();
@@ -761,6 +763,7 @@ function handleSignUp() {
             if(data === 201) {
                 document.getElementById("error_login").innerHTML = "Tài khoản đã tồn tại!"
             } else {
+                alert("Đăng ký tài khoản thành công");
                 $('.form__modal').remove();
                 loginModal();
             }
