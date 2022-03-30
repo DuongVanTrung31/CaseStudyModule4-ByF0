@@ -57,4 +57,9 @@ public class UserServiceImpl implements UserService  {
     public Boolean existsByUsername(String username) {
         return repository.existsByUsername(username);
     }
+
+    @Override
+    public Iterable<User> getAllUsers() {
+        return repository.findAll();
+    }
 }
