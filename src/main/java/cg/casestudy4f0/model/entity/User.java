@@ -31,11 +31,11 @@ public class User {
     @ManyToOne
     private Role role;
 
-
-    public User(String username, String password, String email, Role role) {
+    public User(String username, String password, String email, String fullName,Role role) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.fullName = fullName;
         this.role = role;
     }
 }

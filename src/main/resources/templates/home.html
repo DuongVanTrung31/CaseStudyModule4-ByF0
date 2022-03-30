@@ -41,7 +41,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__right">
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
+                            <a id="link-login" href="" onclick="loginModal()" data-toggle="modal" data-target="#login-modal"><i class="fa fa-user"></i> Đăng nhập</a>
                         </div>
                     </div>
                 </div>
@@ -58,11 +58,11 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a onclick="home()">Trang chủ</a></li>
+                        <li class="active"><a href=""  onclick="home()">Trang chủ</a></li>
                         <li><a onclick="store()">Shop</a></li>
                         <li><a>Dịch vụ</a>
                             <ul class="header__menu__dropdown">
-                                <li><a onclick="cart()">Giỏ hàng</a></li>
+                                <li><a href=""  onclick="cart()">Giỏ hàng</a></li>
                                 <li><a href="" onclick="checkout()">Thanh toán</a></li>
                             </ul>
                         </li>
@@ -198,6 +198,9 @@
         </div>
     </div>
 </footer>
+<div id="login-modal" class='fade__fullfill' onclick="" hidden>
+
+</div>
 </body>
 <script src="../static/js/index.js"></script>
 <script defer src="../static/js/jquery.slicknav.js"></script>

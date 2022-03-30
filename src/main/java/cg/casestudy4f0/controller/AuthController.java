@@ -3,6 +3,7 @@ package cg.casestudy4f0.controller;
 import cg.casestudy4f0.jwt.JwtService;
 import cg.casestudy4f0.model.dto.LoginForm;
 import cg.casestudy4f0.model.dto.SignUpForm;
+import cg.casestudy4f0.model.entity.Role;
 import cg.casestudy4f0.model.entity.User;
 import cg.casestudy4f0.jwt.reponse.JwtResponse;
 import cg.casestudy4f0.repository.RoleRepository;
@@ -42,10 +43,10 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
         if(userService.existsByUsername(signUpForm.getUsername())){
-            return new ResponseEntity<>("The username existed!", HttpStatus.OK);
+            return new ResponseEntity<>(201,HttpStatus.CREATED);
         }
         User user = new User(signUpForm.getUsername(),passwordEncoder.encode(signUpForm.getPassword()),
-                signUpForm.getEmail(),roleRepository.findByName(signUpForm.getRoleName()));
+                signUpForm.getEmail(),signUpForm.getFullName(),roleRepository.findByName(signUpForm.getRoleName()));
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -58,7 +59,7 @@ public class AuthController {
         String jwt = jwtService.createToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername()).get();
-        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(), currentUser.getEmail(), userDetails.getAuthorities());
+        JwtResponse jwtResponse = new JwtResponse(currentUser.getId(),jwt,userDetails.getUsername(),currentUser.getFullName(),currentUser.getEmail(), userDetails.getAuthorities());
         return ResponseEntity.ok(jwtResponse);
     }
 
