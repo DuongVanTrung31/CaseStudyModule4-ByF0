@@ -1,5 +1,7 @@
 package cg.casestudy4f0.controller;
 
+import cg.casestudy4f0.model.entity.Order;
+import cg.casestudy4f0.model.entity.User;
 import cg.casestudy4f0.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,11 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<?> showAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+        Iterable<User> Users = userService.getAllUsers();
+        if (Users != null){
+            return new ResponseEntity<>(Users, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Không có user nào", HttpStatus.OK);
+        }
     }
 }
